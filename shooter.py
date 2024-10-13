@@ -62,3 +62,53 @@ while True:
         #cap the frame rate at 60 frames per second
         clock.tick(60)
 
+        #bullet settings
+        bullet_width = 5
+        bullet_height = 10
+        bullet_speed = 7
+        bullets = []
+
+        #main game loop
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        #create a bullet at  the current player position
+                        bullet_x = player_x + player_width // 2 - bullet_width // 2
+                        bullet_y = player_y
+                        bullets.append(pygame.Rect(bullet_x, bullet_y, bullet_width, bullet_height))
+
+
+            #handle player movement
+            keys = pygame.ley.get_pressed()
+            if keys[pygame.K_LEFT] and player_x > 0:
+                player_x -= player_speed
+            if keys[pygame.K_RIGHT] and player_x < screen_width - player_width:
+                player_x += player_speed
+
+            #update bullet positions
+            for bullet in bullets:
+                bullet.y -= bullet_speed
+
+            #remove bullets that off the screen
+            bullets = [bullet for bullet in bullets if bullet.y > 0]
+
+            #fill the screen with black
+            screen.fill((0, 0, 0))
+
+            #draw the player
+            pygame.draw.rect(screen, (0, 128, 255), (player_x, player_y, player_width, player_height))
+
+            #draw the bullets
+            for bullet in bullets:
+                pygame.draw.rect(screen, (255, 255, 255) bullet)
+
+            #update the display
+            pygame.display.flip()
+
+            #cap the fram rate at 60 frames per second
+            clock.tick(60)
+
