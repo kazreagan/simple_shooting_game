@@ -180,7 +180,74 @@ while True:
 
                 #cap the frame rate at 60 frames per second
                 clock.tick(60)
-                    
+
+                #function for detecting collisions
+                def check_collision(rect1, rect2):
+                    return rect1.colliderect(rect2)
+                
+                #main game loop
+                while True:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            pygame.quit()
+                            sys.exit()
+                        if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_SPACE:
+                                bullet_x = player_x + player_width // 2 - bullet_width // 2
+                                bullet_y = player_y
+                                bullets.append(pygame.Rect(bullet_x, bullet_y, bullet_width, bullet_height))
+
+
+                    #handle player movement
+                    keys = pygame.key.get_pressed()
+                    if keys[pygame.K_LEFT] and player_x > 0:
+                        player_x -= player_speed
+                    if keys[pygame.K_RIGHT] and player_x < screen_width - player_width:
+                        player_x += player_speed
+
+                    #update bullet positions
+                    for bullet in bullets:
+                        bullet.y -= bullet_speed
+                    bullets = [bullet for bullet in bullets if bullet.y > 0]
+
+                    #update enemy positinos and spawn new ones
+                    current_time = pygame.time.get_ticks()
+                    if current_time - enemy_timer > enemy_spawn_time:
+                        enemy_x = random.randint(0, screen_width - enemy_width)
+                        enemy_y = -enemy_height
+                        enemies.append(pygame.Rect(enemy_x, enemy_y, enemy_width, enemy_height))
+                        enemy_timer = current_time
+
+                    for enemy in enemies:
+                        enemy.y += enemy_speed
+
+                    #check for collisions
+                    for bullet in bullets[:]:
+                        for enemy in enemies[:]:
+                            if check_collision(bullet, enemy):
+                                bullets.remove(bullet)
+                                enemies.remove(enemy)
+                                break
+
+
+                    #remove off-screen enemies
+                    enemies = [enemy for enemy in enemies if enemy.y < screen_height]
+
+                    #fill the screen with black
+                    screen.fill((0, 0, 0))
+
+                    #draw the player
+                    pygame.draw.rect(screen, (0, 128, 255), (player_x, player_y, player_width, player_height))
+
+                    #draw the enemies
+                    for enemy in enemies:
+                        pygame.draw.rect(screen, (255, 0, 0), enemy)
+
+                    #update the display
+                    pygame.display.flip()
+
+                    #cap the frame rate at 60 frames per second
+                    clock.tick(60)
 
 
 
