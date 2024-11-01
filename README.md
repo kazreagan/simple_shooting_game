@@ -6,15 +6,15 @@ install pygame using
     ```bash
     pip install pygame
 
-**clone this repo**
+    **clone this repo**
     ```bash
-git clone <your-repo-url>
-cd <repo-folder>
+        git clone <your-repo-url>
+        cd <repo-folder>
 
-**Run the game**
+    **Run the game**
     ```bash
-python shooter.py #windows
-python3 shooter.py #ubuntu
+    python shooter.py #windows
+    python3 shooter.py #ubuntu
 
 **Game Controls**
 - right arrow key: move the player right
