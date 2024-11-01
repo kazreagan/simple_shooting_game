@@ -55,7 +55,7 @@ while True:
                 bullets.append(pygame.Rect(bullet_x, bullet_y, bullet_width, bullet_height))
 
   
-    # Handle player movement
+    #handle player movement
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT] and player_x > 0:
         player_x -= player_speed
@@ -63,13 +63,13 @@ while True:
         player_x += player_speed
 
     
-    # Update bullet positions and remove off-screen bullets
+    #update bullet positions and remove off-screen bullets
     for bullet in bullets:
         bullet.y -= bullet_speed
     bullets = [bullet for bullet in bullets if bullet.y > 0]
 
     
-    # Spawn new enemies at intervals
+    #spawn new enemies at intervals
     current_time = pygame.time.get_ticks()
     if current_time - enemy_timer > enemy_spawn_time:
         enemy_x = random.randint(0, screen_width - enemy_width)
@@ -78,13 +78,13 @@ while True:
         enemy_timer = current_time
 
     
-    # Update enemy positions and remove off-screen enemies
+    #update enemy positions and remove off-screen enemies
     for enemy in enemies:
         enemy.y += enemy_speed
     enemies = [enemy for enemy in enemies if enemy.y < screen_height]
 
     
-    # Check for collisions between bullets and enemies
+    #check for collisions between bullets and enemies
     for bullet in bullets[:]:
         for enemy in enemies[:]:
             if check_collision(bullet, enemy):
@@ -93,29 +93,29 @@ while True:
                 break
 
     
-    # Fill the screen with black
+    #fill the screen with black
     screen.fill((0, 0, 0))
 
     
-    # Draw the player
+    #draw the player
     pygame.draw.rect(screen, (0, 128, 255), (player_x, player_y, player_width, player_height))
 
     
-    # Draw the bullets
+    #draw the bullets
     for bullet in bullets:
         pygame.draw.rect(screen, (255, 255, 255), bullet)
 
     
-    # Draw the enemies
+    #draw the enemies
     for enemy in enemies:
         pygame.draw.rect(screen, (255, 0, 0), enemy)
 
    
-    # Update the display
+    #update the display
     pygame.display.flip()
 
     
-    # Cap the frame rate at 60 frames per second
+    #cap the frame rate at 60 frames per second
     clock.tick(60)
 
 
